@@ -5,8 +5,8 @@ import (
 	"net/http"
 	"strconv"
 
-	"CATALOGO_CRUD/config"
-	"CATALOGO_CRUD/models"
+	"CATALOGO_CORE_CRUD/config"
+	"CATALOGO_CORE_CRUD/models"
 
 	"github.com/gorilla/mux"
 )

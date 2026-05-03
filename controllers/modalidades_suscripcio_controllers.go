@@ -11,20 +11,20 @@ import (
 	"github.com/gorilla/mux"
 )
 
-func GetEstados(w http.ResponseWriter, r *http.Request) {
-	rows, err := config.DB.Query("SELECT id_estado, contexto, nombre, descripcion, activo FROM estados")
+func GetModalidadesSuscripcion(w http.ResponseWriter, r *http.Request) {
+	rows, err := config.DB.Query("SELECT id_modalidad_suscripcion, nombre, descripcion, activo FROM modalidades_suscripcion")
 	if err != nil {
 		respondJSON(w, 500, map[string]string{"error": err.Error()})
 		return
 	}
 	defer rows.Close()
 
-	var list []models.Estados
+	var list []models.ModalidadesSuscripcion
 
 	for rows.Next() {
-		var c models.Estados
+		var c models.ModalidadesSuscripcion
 
-		err := rows.Scan(&c.ID_ESTADO, &c.CONTEXTO, &c.NOMBRE, &c.DESCRIPCION, &c.ACTIVO)
+		err := rows.Scan(&c.ID_MODALIDAD_SUSCRIPCION, &c.NOMBRE, &c.DESCRIPCION, &c.ACTIVO)
 		if err != nil {
 			respondJSON(w, 500, map[string]string{"error": err.Error()})
 			return
@@ -36,7 +36,7 @@ func GetEstados(w http.ResponseWriter, r *http.Request) {
 	respondJSON(w, 200, list)
 }
 
-func GetEstadosByID(w http.ResponseWriter, r *http.Request) {
+func GetModalidadesSuscripcionByID(w http.ResponseWriter, r *http.Request) {
 	params := mux.Vars(r)
 	id, err := strconv.Atoi(params["id"])
 	if err != nil {
@@ -44,12 +44,12 @@ func GetEstadosByID(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	var c models.Estados
+	var c models.ModalidadesSuscripcion
 
 	err = config.DB.QueryRow(
-		"SELECT id_estado, contexto, nombre, descripcion, activo FROM estados WHERE estados = $1",
+		"SELECT id_modalidad_suscripcion, nombre, descripcion, activo FROM id_modalidad_suscripcion WHERE modalidades_suscripcion = $1",
 		id,
-	).Scan(&c.ID_ESTADO, &c.CONTEXTO, &c.NOMBRE, &c.DESCRIPCION, &c.ACTIVO)
+	).Scan(&c.ID_MODALIDAD_SUSCRIPCION, &c.NOMBRE, &c.DESCRIPCION, &c.ACTIVO)
 
 	if err != nil {
 		respondJSON(w, 404, map[string]string{"error": "No encontrado"})
@@ -59,8 +59,8 @@ func GetEstadosByID(w http.ResponseWriter, r *http.Request) {
 	respondJSON(w, 200, c)
 }
 
-func CreateEstado(w http.ResponseWriter, r *http.Request) {
-	var c models.Estados
+func CreateModalidadesSuscripcion(w http.ResponseWriter, r *http.Request) {
+	var c models.ModalidadesSuscripcion
 
 	err := json.NewDecoder(r.Body).Decode(&c)
 	if err != nil {
@@ -69,9 +69,9 @@ func CreateEstado(w http.ResponseWriter, r *http.Request) {
 	}
 
 	err = config.DB.QueryRow(
-		"INSERT INTO estados (contexto, nombre, descripcion, activo) VALUES ($1,$2,$3,$4) RETURNING estados",
-		c.CONTEXTO, c.NOMBRE, c.DESCRIPCION, c.ACTIVO,
-	).Scan(&c.ID_ESTADO)
+		"INSERT INTO modalidades_suscripcion (nombre, descripcion, activo) VALUES ($1,$2,$3) RETURNING id_modalidad_suscripcion",
+		c.NOMBRE, c.DESCRIPCION, c.ACTIVO,
+	).Scan(&c.ID_MODALIDAD_SUSCRIPCION)
 
 	if err != nil {
 		respondJSON(w, 500, map[string]string{"error": err.Error()})
@@ -81,7 +81,7 @@ func CreateEstado(w http.ResponseWriter, r *http.Request) {
 	respondJSON(w, 201, c)
 }
 
-func UpdateEstado(w http.ResponseWriter, r *http.Request) {
+func UpdateModalidadesSuscripcion(w http.ResponseWriter, r *http.Request) {
 	params := mux.Vars(r)
 	id, err := strconv.Atoi(params["id"])
 	if err != nil {
@@ -89,7 +89,7 @@ func UpdateEstado(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	var c models.Estados
+	var c models.ModalidadesSuscripcion
 
 	err = json.NewDecoder(r.Body).Decode(&c)
 	if err != nil {
@@ -98,8 +98,8 @@ func UpdateEstado(w http.ResponseWriter, r *http.Request) {
 	}
 
 	_, err = config.DB.Exec(
-		"UPDATE estados SET contexto=$1, nombre=$2, descripcion=$3, activo=$4 WHERE estados = $5",
-		c.CONTEXTO, c.NOMBRE, c.DESCRIPCION, c.ACTIVO, id,
+		"UPDATE modalidades_suscripcion SET nombre=$1, descripcion=$2, activo=$3 WHERE id_modalidad_suscripcion = $4",
+		c.NOMBRE, c.DESCRIPCION, c.ACTIVO, id,
 	)
 
 	if err != nil {
@@ -110,7 +110,7 @@ func UpdateEstado(w http.ResponseWriter, r *http.Request) {
 	respondJSON(w, 200, map[string]string{"message": "Actualizado"})
 }
 
-func DeleteEstado(w http.ResponseWriter, r *http.Request) {
+func DeleteModalidadesSuscripcion(w http.ResponseWriter, r *http.Request) {
 	params := mux.Vars(r)
 	id, err := strconv.Atoi(params["id"])
 	if err != nil {
@@ -118,7 +118,7 @@ func DeleteEstado(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	_, err = config.DB.Exec("DELETE FROM estados WHERE estados = $1", id)
+	_, err = config.DB.Exec("DELETE FROM modalidades_suscripcion WHERE id_modalidad_suscripcion = $1", id)
 	if err != nil {
 		respondJSON(w, 500, map[string]string{"error": err.Error()})
 		return
