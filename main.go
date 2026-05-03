@@ -39,6 +39,8 @@ func main() {
 
 	routers.RegisterModalidadesTrabajoRouters(r)
 
+	routers.RegisterTurnoRouters(r)
+
 	log.Println("servidor corriendo en el puerto 8082")
 
 	http.ListenAndServe(":8082", enableCORS(r))
