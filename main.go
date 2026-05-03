@@ -55,6 +55,8 @@ func main() {
 
 	routers.RegisterUsuarios(r)
 
+	routers.RegisterDocumentosIdentidadRouters(r)
+
 	routers.RegisterCredencialesRouters(r)
 
 	log.Println("servidor corriendo en el puerto 8082")
