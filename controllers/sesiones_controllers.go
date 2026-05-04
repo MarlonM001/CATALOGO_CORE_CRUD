@@ -12,7 +12,7 @@ import (
 )
 
 // 🔹 GET ALL
-func GetSesiones(w http.ResponseWriter, r *http.Request) {
+func GetSesion(w http.ResponseWriter, r *http.Request) {
 	rows, err := config.DB.Query(`
 		SELECT id_sesiones, id_usuarios, token, dispositivo, ip,
 		       activa, expira_en, creado_en, actualizado_en

@@ -7,10 +7,10 @@ import (
 )
 
 func RegisterDocumentosIdentidadRouters(r *mux.Router) {
-	r.HandleFunc("/documentos_identidad", controllers.GetDocumentoIdentidadByID).Methods("GET")
-	r.HandleFunc("/documentos_identidad/{id}", controllers.GetDocumentoIdentidadByID).Methods("GET")
-	r.HandleFunc("/documentos_identidad", controllers.CreateDocumentoIdentidad).Methods("POST")
-	r.HandleFunc("/documentos_identidad/{id}", controllers.UpdateDocumentoIdentidad).Methods("PUT")
-	r.HandleFunc("/documentos_identidad/{id}", controllers.DeleteDocumentoIdentidad).Methods("DELETE")
+	r.HandleFunc("/documentos_identidad", controllers.GetDocumentosIdentidad).Methods("GET")
+	r.HandleFunc("/documentos_identidad/{id}", controllers.GetDocumentosIdentidadByID).Methods("GET")
+	r.HandleFunc("/documentos_identidad", controllers.CreateDocumentosIdentidad).Methods("POST")
+	r.HandleFunc("/documentos_identidad/{id}", controllers.UpdateDocumentosIdentidad).Methods("PUT")
+	r.HandleFunc("/documentos_identidad/{id}", controllers.DeleteDocumentosIdentidad).Methods("DELETE")
 
 }

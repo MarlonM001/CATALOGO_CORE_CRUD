@@ -12,7 +12,7 @@ import (
 )
 
 func GetTipoDocumentos(w http.ResponseWriter, r *http.Request) {
-	rows, err := config.DB.Query("SELECT id_tipo_documentos, nombre, descripcion, activo FROM tipo_documentos")
+	rows, err := config.DB.Query("SELECT id_tipo_documento, nombre, descripcion, activo FROM core.tipo_documento")
 	if err != nil {
 		respondJSON(w, 500, map[string]string{"error": err.Error()})
 		return
@@ -24,7 +24,7 @@ func GetTipoDocumentos(w http.ResponseWriter, r *http.Request) {
 	for rows.Next() {
 		var c models.TiposDocumentos
 
-		err := rows.Scan(&c.ID_TIPO_DOCUMENTOS, &c.NOMBRE, &c.DESCRIPCION, &c.ACTIVO)
+		err := rows.Scan(&c.ID_TIPO_DOCUMENTO, &c.NOMBRE, &c.DESCRIPCION, &c.ACTIVO)
 		if err != nil {
 			respondJSON(w, 500, map[string]string{"error": err.Error()})
 			return
@@ -47,9 +47,9 @@ func GetTiposDocumentosByID(w http.ResponseWriter, r *http.Request) {
 	var c models.TiposDocumentos
 
 	err = config.DB.QueryRow(
-		"SELECT id_tipo_documentos, nombre, descripcion, activo FROM tipo_documentos WHERE id_tipo_documentos = $1",
+		"SELECT id_tipo_documento, nombre, descripcion, activo FROM core.tipo_documento WHERE id_tipo_documento = $1",
 		id,
-	).Scan(&c.ID_TIPO_DOCUMENTOS, &c.NOMBRE, &c.DESCRIPCION, &c.ACTIVO)
+	).Scan(&c.ID_TIPO_DOCUMENTO, &c.NOMBRE, &c.DESCRIPCION, &c.ACTIVO)
 
 	if err != nil {
 		respondJSON(w, 404, map[string]string{"error": "No encontrado"})
@@ -69,9 +69,9 @@ func CreateTiposDocumentos(w http.ResponseWriter, r *http.Request) {
 	}
 
 	err = config.DB.QueryRow(
-		"INSERT INTO tipo_documentos (nombre, descripcion, activo) VALUES ($1,$2,$3) RETURNING id_tipo_documentos",
+		"INSERT INTO core.tipo_documento (nombre, descripcion, activo) VALUES ($1,$2,$3) RETURNING id_tipo_documento",
 		c.NOMBRE, c.DESCRIPCION, c.ACTIVO,
-	).Scan(&c.ID_TIPO_DOCUMENTOS)
+	).Scan(&c.ID_TIPO_DOCUMENTO)
 
 	if err != nil {
 		respondJSON(w, 500, map[string]string{"error": err.Error()})
@@ -98,7 +98,7 @@ func UpdateTiposDocumentos(w http.ResponseWriter, r *http.Request) {
 	}
 
 	_, err = config.DB.Exec(
-		"UPDATE tipo_documentos SET nombre=$1, descripcion=$2, activo=$3 WHERE id_tipo_documentos = $4",
+		"UPDATE core.tipo_documento SET nombre=$1, descripcion=$2, activo=$3 WHERE id_tipo_documento = $4",
 		c.NOMBRE, c.DESCRIPCION, c.ACTIVO, id,
 	)
 
@@ -118,7 +118,7 @@ func DeleteTiposDocumentos(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	_, err = config.DB.Exec("DELETE FROM tipo_documentos WHERE id_tipo_documentos = $1", id)
+	_, err = config.DB.Exec("DELETE FROM core.tipo_documento WHERE id_tipo_documento = $1", id)
 	if err != nil {
 		respondJSON(w, 500, map[string]string{"error": err.Error()})
 		return

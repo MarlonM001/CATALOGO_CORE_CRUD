@@ -1,4 +1,30 @@
-## Estrutura del proyecto
+# CATALOGO_CORE_CRUD
+
+Módulo backend en Go que centraliza los datos de referencia y la gestión de usuarios del sistema. Administra estados, tipos, configuraciones, identidad, roles, credenciales y sesiones, siendo la base de todos los procesos del sistema.
+
+---
+
+## Nombre del Schema
+
+**Schema:** `catalogo`
+
+Este schema organiza todas las tablas relacionadas con datos de referencia y gestión de usuarios dentro de la base de datos.
+
+---
+
+## Tecnologías utilizadas
+
+- **Go (v1.21+)** — Lenguaje principal  
+- **Gorilla Mux (v1.8.1)** — Enrutador HTTP  
+- **PostgreSQL** — Base de datos relacional  
+- **lib/pq (v1.12.3)** — Driver de PostgreSQL para Go  
+- **Go Modules** — Gestión de dependencias  
+- **Visual Studio Code** — Entorno de desarrollo  
+
+---
+
+## Estructura del proyecto
+
 
 CATALOGO_CORE_CRUD/
 ├── config/
@@ -26,30 +52,9 @@ CATALOGO_CORE_CRUD/
 
 ---
 
-##  Módulos registrados
-
-| Módulo                     | Función registrada                 |
-|--------------------------|----------------------------------|
-| Géneros                  | RegisterGenerosRouters           |
-| Experiencia              | RegisterExperienciaRouters       |
-| Modalidades de trabajo   | RegisterModalidadesTrabajoRouters|
-| Turno                    | RegisterTurnoRouters             |
-| Días de la semana        | RegisterDiasSemanasRouters       |
-| Estados                  | RegisterEstadosRouters           |
-| Tipos                    | RegisterTiposRouters             |
-| Modalidades suscripción  | RegisterModalidadesSuscripcionRouters |
-| Roles de usuario         | RegisterRolesUsuarioRouters      |
-| Tipo de documentos       | RegisterTipoDocumentos           |
-| Usuarios                 | RegisterUsuarios                 |
-| Documentos de identidad  | RegisterDocumentosIdentidadRouters |
-| Credenciales             | RegisterCredencialesRouters      |
-| Sesión                   | RegisterSesionRouters            |
-
----
-
 ##  Variables de entorno
 
-Crea un archivo `.env` en la raíz del proyecto. **No subas este archivo al repositorio.**
+Crea un archivo `.env` en la raíz del proyecto (**no subir al repositorio**):
 
 ```env
 # Base de datos
@@ -58,46 +63,43 @@ DB_PORT=5432
 DB_USER=postgres
 DB_PASSWORD=tu_contraseña
 DB_NAME=catalogo_core
+DB_SCHEMA=catalogo
 DB_SSLMODE=disable
 
 # Servidor
 APP_PORT=8082
 APP_ENV=development
 
-Agrega .env a tu .gitignore y sube solo el archivo .env.example como referencia.
 
- Ejecución 
 
+▶️ Ejecución del proyecto
 🔧 Requisitos previos
 Go 1.21+
 PostgreSQL
-Visual Studio Code + extensión Go
 Git
-
- Pasos
-
-1. Clonar el repositorio
+Visual Studio Code
+📌 Pasos
+1. Clonar repositorio
 git clone https://github.com/tu-usuario/CATALOGO_CORE_CRUD.git
 cd CATALOGO_CORE_CRUD
 2. Instalar dependencias
 go mod tidy
-3. Configurar variables de entorno
+3. Configurar entorno
 cp .env.example .env
-# Edita .env con tus credenciales
-4. Ejecutar en desarrollo
+4. Ejecutar proyecto
 go run main.go
-5. Compilar y ejecutar
+5. Compilar
 go build -o bin/catalogo_core_crud .
 ./bin/catalogo_core_crud
-6. Ejecutar pruebas
+6. Tests
 go test ./...
 
-El servidor corre en:
-👉 http://localhost:8082
+Servidor disponible en:
+http://localhost:8082
 
 CORS
 
-El middleware CORS está habilitado con origen abierto (*) y soporta los métodos:
+Configurado con origen abierto (*) y métodos:
 
 GET
 POST
@@ -107,6 +109,6 @@ OPTIONS
 
 
 
-Licencia
+📄 Licencia
 
 JOBSY
