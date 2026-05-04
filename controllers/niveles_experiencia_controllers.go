@@ -12,7 +12,7 @@ import (
 )
 
 func GetExperiencia(w http.ResponseWriter, r *http.Request) {
-	rows, err := config.DB.Query("SELECT id_nivel_experiencia, nombre, descripcion, activo FROM niveles_experiencia")
+	rows, err := config.DB.Query("SELECT id_nivel_experiencia, nombre, descripcion, activo FROM catalogo.niveles_experiencia")
 	if err != nil {
 		respondJSON(w, 500, map[string]string{"error": err.Error()})
 		return
@@ -47,7 +47,7 @@ func GetExperienciaByID(w http.ResponseWriter, r *http.Request) {
 	var c models.NivelesExperiencia
 
 	err = config.DB.QueryRow(
-		"SELECT id_nivel_experiencia, nombre, descripcion, activo FROM niveles_experiencia WHERE id_nivel_experiencia = $1",
+		"SELECT id_nivel_experiencia, nombre, descripcion, activo FROM catalogo.niveles_experiencia WHERE id_nivel_experiencia = $1",
 		id,
 	).Scan(&c.ID_EXPERIENCIA, &c.NOMBRE, &c.DESCRIPCION, &c.ACTIVO)
 
@@ -69,7 +69,7 @@ func CreateExperiencia(w http.ResponseWriter, r *http.Request) {
 	}
 
 	err = config.DB.QueryRow(
-		"INSERT INTO niveles_experiencia (nombre, descripcion, activo) VALUES ($1,$2,$3) RETURNING id_nivel_experiencia",
+		"INSERT INTO catalogo.niveles_experiencia (nombre, descripcion, activo) VALUES ($1,$2,$3) RETURNING id_nivel_experiencia",
 		c.NOMBRE, c.DESCRIPCION, c.ACTIVO,
 	).Scan(&c.ID_EXPERIENCIA)
 
@@ -98,7 +98,7 @@ func UpdateExperiencia(w http.ResponseWriter, r *http.Request) {
 	}
 
 	_, err = config.DB.Exec(
-		"UPDATE niveles_experiencia SET nombre=$1, descripcion=$2, activo=$3 WHERE id_nivel_experiencia = $4",
+		"UPDATE catalogo.niveles_experiencia SET nombre=$1, descripcion=$2, activo=$3 WHERE id_nivel_experiencia = $4",
 		c.NOMBRE, c.DESCRIPCION, c.ACTIVO, id,
 	)
 
@@ -118,7 +118,7 @@ func DeleteExperiencia(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	_, err = config.DB.Exec("DELETE FROM niveles_experiencia WHERE id_nivel_experiencia = $1", id)
+	_, err = config.DB.Exec("DELETE FROM catalogo.niveles_experiencia WHERE id_nivel_experiencia = $1", id)
 	if err != nil {
 		respondJSON(w, 500, map[string]string{"error": err.Error()})
 		return

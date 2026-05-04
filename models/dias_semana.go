@@ -1,7 +1,7 @@
 package models
 
 type DiaSemana struct {
-	ID_DIA_SEMANA   int    `json:"id_dia_semana"`
+	ID_DIAS_SEMANA  int    `json:"id_dias_semana"`
 	NOMBRE          string `json:"nombre"`
 	NOMBRE_COMPLETO string `json:"nombre_completo"`
 	DESCRIPCION     string `json:"descripcion"`

@@ -67,7 +67,7 @@ func GetUsuariosByID(w http.ResponseWriter, r *http.Request) {
 
 	err = config.DB.QueryRow(`
 		SELECT id_usuarios, nombre, apellido, correo, telefono, ciudad, fecha_nacimiento, id_genero,
-		       nacionalidad, foto_url, id_roles_usuarios, disponibilidad, perfil_publico, activo
+		       nacionalidad, foto_url, id_roles_usuarios, disponible, perfil_publico, activo
 		FROM core.usuarios
 		WHERE id_usuarios = $1`, id).
 		Scan(
@@ -111,7 +111,7 @@ func CreateUsuarios(w http.ResponseWriter, r *http.Request) {
 	err = config.DB.QueryRow(`
 		INSERT INTO core.usuarios 
 		(nombre, apellido, correo, telefono, ciudad, fecha_nacimiento, id_genero,
-		 nacionalidad, foto_url, id_roles_usuarios, disponibilidad, perfil_publico, activo)
+		 nacionalidad, foto_url, id_roles_usuarios, disponible, perfil_publico, activo)
 		VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13)
 		RETURNING id_usuarios`,
 		c.NOMBRE,
@@ -165,7 +165,7 @@ func UpdateUsuarios(w http.ResponseWriter, r *http.Request) {
 			nacionalidad=$8,
 			foto_url=$9,
 			id_roles_usuarios=$10,
-			disponibilidad=$11,
+			disponible=$11,
 			perfil_publico=$12,
 			activo=$13
 		WHERE id_usuarios = $14`,

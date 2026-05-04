@@ -12,7 +12,7 @@ import (
 )
 
 func GetTurno(w http.ResponseWriter, r *http.Request) {
-	rows, err := config.DB.Query("SELECT id_turno, nombre, descripcion, activo FROM turnos")
+	rows, err := config.DB.Query("SELECT id_turno, nombre, descripcion, activo FROM catalogo.turnos")
 	if err != nil {
 		respondJSON(w, 500, map[string]string{"error": err.Error()})
 		return
@@ -47,7 +47,8 @@ func GetTurnoByID(w http.ResponseWriter, r *http.Request) {
 	var c models.Turno
 
 	err = config.DB.QueryRow(
-		"SELECT id_turno, nombre, descripcion, activo FROM id_turno WHERE turnos = $1",
+		// ✅ FROM tabla WHERE columna (estaba FROM columna WHERE tabla)
+		"SELECT id_turno, nombre, descripcion, activo FROM catalogo.turnos WHERE id_turno = $1",
 		id,
 	).Scan(&c.ID_TURNOS, &c.NOMBRE, &c.DESCRIPCION, &c.ACTIVO)
 
@@ -69,7 +70,8 @@ func CreateTurno(w http.ResponseWriter, r *http.Request) {
 	}
 
 	err = config.DB.QueryRow(
-		"INSERT INTO id_turno (nombre, descripcion, activo) VALUES ($1,$2,$3) RETURNING turnos",
+		// ✅ INSERT INTO tabla RETURNING columna (estaba INSERT INTO columna RETURNING tabla)
+		"INSERT INTO catalogo.turnos (nombre, descripcion, activo) VALUES ($1,$2,$3) RETURNING id_turno",
 		c.NOMBRE, c.DESCRIPCION, c.ACTIVO,
 	).Scan(&c.ID_TURNOS)
 
@@ -98,7 +100,8 @@ func UpdateTurno(w http.ResponseWriter, r *http.Request) {
 	}
 
 	_, err = config.DB.Exec(
-		"UPDATE id_turno SET nombre=$1, descripcion=$2, activo=$3 WHERE turnos = $4",
+		// ✅ UPDATE tabla WHERE columna (estaba UPDATE columna WHERE tabla)
+		"UPDATE catalogo.turnos SET nombre=$1, descripcion=$2, activo=$3 WHERE id_turno = $4",
 		c.NOMBRE, c.DESCRIPCION, c.ACTIVO, id,
 	)
 
@@ -118,7 +121,10 @@ func DeleteTurno(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	_, err = config.DB.Exec("DELETE FROM id_turno WHERE turnos = $1", id)
+	_, err = config.DB.Exec(
+		// ✅ DELETE FROM tabla WHERE columna (estaba DELETE FROM columna WHERE tabla)
+		"DELETE FROM catalogo.turnos WHERE id_turno = $1", id,
+	)
 	if err != nil {
 		respondJSON(w, 500, map[string]string{"error": err.Error()})
 		return

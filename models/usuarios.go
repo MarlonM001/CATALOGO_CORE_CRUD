@@ -12,7 +12,7 @@ type Usuario struct {
 	NACIONALIDAD      string `json:"nacionalidad"`
 	FOTO_URL          string `json:"foto_url"`
 	ID_ROLES_USUARIOS int    `json:"id_roles_usarios"`
-	DISPONIBLE        bool   `json:"disponible"`
+	DISPONIBLE     bool   `json:"disponible"`
 	PERFIL_PUBLICO    bool   `json:"perfil_publico"`
 	ACTIVO            bool   `json:"activo"`
 }

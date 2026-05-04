@@ -11,16 +11,14 @@ import (
 	"github.com/gorilla/mux"
 )
 
-// HELPER RESPUESTA JSON
 func respondJSON(w http.ResponseWriter, status int, payload interface{}) {
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(status)
 	json.NewEncoder(w).Encode(payload)
 }
 
-// GET ALL
 func GetGeneros(w http.ResponseWriter, r *http.Request) {
-	rows, err := config.DB.Query("SELECT id_genero, nombre, activo FROM generos")
+	rows, err := config.DB.Query("SELECT id_genero, nombre, activo FROM catalogo.generos")
 	if err != nil {
 		respondJSON(w, 500, map[string]string{"error": err.Error()})
 		return
@@ -44,10 +42,8 @@ func GetGeneros(w http.ResponseWriter, r *http.Request) {
 	respondJSON(w, 200, list)
 }
 
-// GET BY ID
 func GetGenerosByID(w http.ResponseWriter, r *http.Request) {
-	params := mux.Vars(r)
-	idStr := params["id"]
+	idStr := mux.Vars(r)["id"]
 
 	id, err := strconv.Atoi(idStr)
 	if err != nil {
@@ -58,7 +54,7 @@ func GetGenerosByID(w http.ResponseWriter, r *http.Request) {
 	var c models.Genero
 
 	err = config.DB.QueryRow(
-		"SELECT nombre, activo FROM generos WHERE id_genero=$1", id,
+		"SELECT id_genero, nombre, activo FROM catalogo.generos WHERE id_genero = $1", id,
 	).Scan(&c.ID_GENERO, &c.NOMBRE, &c.ACTIVO)
 
 	if err != nil {
@@ -69,7 +65,6 @@ func GetGenerosByID(w http.ResponseWriter, r *http.Request) {
 	respondJSON(w, 200, c)
 }
 
-// CREATE
 func CreateGeneros(w http.ResponseWriter, r *http.Request) {
 	var c models.Genero
 
@@ -80,7 +75,7 @@ func CreateGeneros(w http.ResponseWriter, r *http.Request) {
 	}
 
 	err = config.DB.QueryRow(
-		"INSERT INTO generos (nombre, activo) VALUES ($1,$2) RETURNING id_genero",
+		"INSERT INTO catalogo.generos (nombre, activo) VALUES ($1,$2) RETURNING id_genero",
 		c.NOMBRE, c.ACTIVO,
 	).Scan(&c.ID_GENERO)
 
@@ -92,12 +87,9 @@ func CreateGeneros(w http.ResponseWriter, r *http.Request) {
 	respondJSON(w, 201, c)
 }
 
-// UPDATE
 func UpdateGeneros(w http.ResponseWriter, r *http.Request) {
 	params := mux.Vars(r)
-	idStr := params["id"]
-
-	id, err := strconv.Atoi(idStr)
+	id, err := strconv.Atoi(params["id"])
 	if err != nil {
 		respondJSON(w, 400, map[string]string{"error": "ID inválido"})
 		return
@@ -112,7 +104,7 @@ func UpdateGeneros(w http.ResponseWriter, r *http.Request) {
 	}
 
 	_, err = config.DB.Exec(
-		"UPDATE generos SET nombre=$1, activo=$2 WHERE id_genero=$3",
+		"UPDATE catalogo.generos SET nombre=$1, activo=$2 WHERE id_genero=$3",
 		c.NOMBRE, c.ACTIVO, id,
 	)
 
@@ -124,18 +116,15 @@ func UpdateGeneros(w http.ResponseWriter, r *http.Request) {
 	respondJSON(w, 200, map[string]string{"message": "Dato actualizado"})
 }
 
-// DELETE
 func DeleteGeneros(w http.ResponseWriter, r *http.Request) {
 	params := mux.Vars(r)
-	idStr := params["id"]
-
-	id, err := strconv.Atoi(idStr)
+	id, err := strconv.Atoi(params["id"])
 	if err != nil {
 		respondJSON(w, 400, map[string]string{"error": "ID inválido"})
 		return
 	}
 
-	_, err = config.DB.Exec("DELETE FROM generos WHERE id_genero=$1", id)
+	_, err = config.DB.Exec("DELETE FROM catalogo.generos WHERE id_genero=$1", id)
 	if err != nil {
 		respondJSON(w, 500, map[string]string{"error": err.Error()})
 		return

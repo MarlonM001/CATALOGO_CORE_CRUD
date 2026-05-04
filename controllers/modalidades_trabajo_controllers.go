@@ -12,7 +12,7 @@ import (
 )
 
 func GetModalidadesTrabajo(w http.ResponseWriter, r *http.Request) {
-	rows, err := config.DB.Query("SELECT id_modalidad_trabajo, nombre, descripcion, activo FROM  modalidades_trabajo")
+	rows, err := config.DB.Query("SELECT id_modalidad_trabajo, nombre, descripcion, activo FROM catalogo.modalidades_trabajo")
 	if err != nil {
 		respondJSON(w, 500, map[string]string{"error": err.Error()})
 		return
@@ -38,9 +38,7 @@ func GetModalidadesTrabajo(w http.ResponseWriter, r *http.Request) {
 
 func GetModalidadesTrabajoByID(w http.ResponseWriter, r *http.Request) {
 	params := mux.Vars(r)
-	idStr := params["id"]
-
-	id, err := strconv.Atoi(idStr)
+	id, err := strconv.Atoi(params["id"])
 	if err != nil {
 		respondJSON(w, 400, map[string]string{"error": "ID inválido"})
 		return
@@ -49,8 +47,7 @@ func GetModalidadesTrabajoByID(w http.ResponseWriter, r *http.Request) {
 	var c models.ModalidadesTrabajo
 
 	err = config.DB.QueryRow(
-
-		"SELECT id_modalidad_trabajo, nombre, descripcion, activo FROM modalidades_trabajo WHERE id_modalidad_trabajo = $1", id,
+		"SELECT id_modalidad_trabajo, nombre, descripcion, activo FROM catalogo.modalidades_trabajo WHERE id_modalidad_trabajo = $1", id,
 	).Scan(&c.ID_MODALIDAD_TRABAJO, &c.NOMBRE, &c.DESCRIPCION, &c.ACTIVO)
 
 	if err != nil {
@@ -71,7 +68,7 @@ func CreateModalidadesTrabajo(w http.ResponseWriter, r *http.Request) {
 	}
 
 	err = config.DB.QueryRow(
-		"INSERT INTO modalidades_trabajo (nombre, descripcion, activo) VALUES ($1,$2,$3) RETURNING id_modalidad_trabajo",
+		"INSERT INTO catalogo.modalidades_trabajo (nombre, descripcion, activo) VALUES ($1,$2,$3) RETURNING id_modalidad_trabajo",
 		c.NOMBRE, c.DESCRIPCION, c.ACTIVO,
 	).Scan(&c.ID_MODALIDAD_TRABAJO)
 
@@ -100,7 +97,7 @@ func UpdateModalidadesTrabajo(w http.ResponseWriter, r *http.Request) {
 	}
 
 	_, err = config.DB.Exec(
-		"UPDATE modalidades_trabajo SET nombre=$1, descripcion=$2, activo=$3 WHERE id_modalidad_trabajo = $4",
+		"UPDATE catalogo.modalidades_trabajo SET nombre=$1, descripcion=$2, activo=$3 WHERE id_modalidad_trabajo = $4",
 		c.NOMBRE, c.DESCRIPCION, c.ACTIVO, id,
 	)
 
@@ -120,7 +117,7 @@ func DeleteModalidadesTrabajo(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	_, err = config.DB.Exec("DELETE FROM modalidades_trabajo WHERE id_modalidad_trabajo = $1", id)
+	_, err = config.DB.Exec("DELETE FROM catalogo.modalidades_trabajo WHERE id_modalidad_trabajo = $1", id)
 	if err != nil {
 		respondJSON(w, 500, map[string]string{"error": err.Error()})
 		return

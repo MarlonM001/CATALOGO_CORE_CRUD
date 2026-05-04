@@ -12,7 +12,7 @@ import (
 )
 
 func GetModalidadesSuscripcion(w http.ResponseWriter, r *http.Request) {
-	rows, err := config.DB.Query("SELECT id_modalidad_suscripcion, nombre, descripcion, activo FROM modalidades_suscripcion")
+	rows, err := config.DB.Query("SELECT id_modalidad_suscripcion, nombre, descripcion, activo FROM catalogo.modalidades_suscripcion")
 	if err != nil {
 		respondJSON(w, 500, map[string]string{"error": err.Error()})
 		return
@@ -47,7 +47,8 @@ func GetModalidadesSuscripcionByID(w http.ResponseWriter, r *http.Request) {
 	var c models.ModalidadesSuscripcion
 
 	err = config.DB.QueryRow(
-		"SELECT id_modalidad_suscripcion, nombre, descripcion, activo FROM id_modalidad_suscripcion WHERE modalidades_suscripcion = $1",
+		// ✅ FROM tabla WHERE columna (estaba FROM columna WHERE tabla)
+		"SELECT id_modalidad_suscripcion, nombre, descripcion, activo FROM catalogo.modalidades_suscripcion WHERE id_modalidad_suscripcion = $1",
 		id,
 	).Scan(&c.ID_MODALIDAD_SUSCRIPCION, &c.NOMBRE, &c.DESCRIPCION, &c.ACTIVO)
 
@@ -69,7 +70,7 @@ func CreateModalidadesSuscripcion(w http.ResponseWriter, r *http.Request) {
 	}
 
 	err = config.DB.QueryRow(
-		"INSERT INTO modalidades_suscripcion (nombre, descripcion, activo) VALUES ($1,$2,$3) RETURNING id_modalidad_suscripcion",
+		"INSERT INTO catalogo.modalidades_suscripcion (nombre, descripcion, activo) VALUES ($1,$2,$3) RETURNING id_modalidad_suscripcion",
 		c.NOMBRE, c.DESCRIPCION, c.ACTIVO,
 	).Scan(&c.ID_MODALIDAD_SUSCRIPCION)
 
@@ -98,7 +99,7 @@ func UpdateModalidadesSuscripcion(w http.ResponseWriter, r *http.Request) {
 	}
 
 	_, err = config.DB.Exec(
-		"UPDATE modalidades_suscripcion SET nombre=$1, descripcion=$2, activo=$3 WHERE id_modalidad_suscripcion = $4",
+		"UPDATE catalogo.modalidades_suscripcion SET nombre=$1, descripcion=$2, activo=$3 WHERE id_modalidad_suscripcion = $4",
 		c.NOMBRE, c.DESCRIPCION, c.ACTIVO, id,
 	)
 
@@ -118,7 +119,7 @@ func DeleteModalidadesSuscripcion(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	_, err = config.DB.Exec("DELETE FROM modalidades_suscripcion WHERE id_modalidad_suscripcion = $1", id)
+	_, err = config.DB.Exec("DELETE FROM catalogo.modalidades_suscripcion WHERE id_modalidad_suscripcion = $1", id)
 	if err != nil {
 		respondJSON(w, 500, map[string]string{"error": err.Error()})
 		return
