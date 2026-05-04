@@ -12,7 +12,7 @@ import (
 )
 
 func GetRolesUsuario(w http.ResponseWriter, r *http.Request) {
-	rows, err := config.DB.Query("SELECT id_roles_usuario, nombre, descripcion, activo FROM roles_usuario")
+	rows, err := config.DB.Query("SELECT id_roles_usuarios, nombre, descripcion, activo FROM roles_usuarios")
 	if err != nil {
 		respondJSON(w, 500, map[string]string{"error": err.Error()})
 		return
@@ -47,7 +47,7 @@ func GetRolesUsuarioByID(w http.ResponseWriter, r *http.Request) {
 	var c models.RolesUsuario
 
 	err = config.DB.QueryRow(
-		"SELECT id_roles_usuario, nombre, descripcion, activo FROM niveles_experiencia WHERE roles_usuario = $1",
+		"SELECT id_roles_usuarios, nombre, descripcion, activo FROM roles_usuarios WHERE id_roles_usuarios = $1",
 		id,
 	).Scan(&c.ID_ROLES_USUARIO, &c.NOMBRE, &c.DESCRIPCION, &c.ACTIVO)
 
@@ -69,7 +69,7 @@ func CreateRolesUsuario(w http.ResponseWriter, r *http.Request) {
 	}
 
 	err = config.DB.QueryRow(
-		"INSERT INTO roles_usuario (nombre, descripcion, activo) VALUES ($1,$2,$3) RETURNING id_roles_usuario",
+		"INSERT INTO roles_usuarios (nombre, descripcion, activo) VALUES ($1,$2,$3) RETURNING id_roles_usuarios",
 		c.NOMBRE, c.DESCRIPCION, c.ACTIVO,
 	).Scan(&c.ID_ROLES_USUARIO)
 
@@ -98,7 +98,7 @@ func UpdateRolesUsuario(w http.ResponseWriter, r *http.Request) {
 	}
 
 	_, err = config.DB.Exec(
-		"UPDATE roles_usuario SET nombre=$1, descripcion=$2, activo=$3 WHERE id_roles_usuario = $4",
+		"UPDATE roles_usuarios SET nombre=$1, descripcion=$2, activo=$3 WHERE id_roles_usuarios = $4",
 		c.NOMBRE, c.DESCRIPCION, c.ACTIVO, id,
 	)
 
@@ -118,7 +118,7 @@ func DeleteRolesUsuario(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	_, err = config.DB.Exec("DELETE FROM roles_usuario WHERE id_roles_usuario = $1", id)
+	_, err = config.DB.Exec("DELETE FROM roles_usuarios WHERE id_roles_usuarios = $1", id)
 	if err != nil {
 		respondJSON(w, 500, map[string]string{"error": err.Error()})
 		return

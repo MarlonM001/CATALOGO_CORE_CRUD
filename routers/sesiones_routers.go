@@ -1,7 +1,7 @@
 package routers
 
 import (
-	"CATALOGO_CRUD/controllers"
+	"CATALOGO_CORE_CRUD/controllers"
 
 	"github.com/gorilla/mux"
 )

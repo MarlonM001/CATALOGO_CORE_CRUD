@@ -14,12 +14,12 @@ Este schema organiza todas las tablas relacionadas con datos de referencia y ges
 
 ## Tecnologías utilizadas
 
-- 🟦 **Go (v1.21+)** — Lenguaje principal  
-- 🌐 **Gorilla Mux (v1.8.1)** — Enrutador HTTP  
-- 🐘 **PostgreSQL** — Base de datos relacional  
-- 🔌 **lib/pq (v1.12.3)** — Driver de PostgreSQL para Go  
-- 📦 **Go Modules** — Gestión de dependencias  
-- 💻 **Visual Studio Code** — Entorno de desarrollo  
+- **Go (v1.21+)** — Lenguaje principal  
+- **Gorilla Mux (v1.8.1)** — Enrutador HTTP  
+- **PostgreSQL** — Base de datos relacional  
+- **lib/pq (v1.12.3)** — Driver de PostgreSQL para Go  
+- **Go Modules** — Gestión de dependencias  
+- **Visual Studio Code** — Entorno de desarrollo  
 
 ---
 
