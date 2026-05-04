@@ -47,7 +47,7 @@ func GetEstadosByID(w http.ResponseWriter, r *http.Request) {
 	var c models.Estados
 
 	err = config.DB.QueryRow(
-		// ✅ WHERE id_estado (columna), no WHERE estados (tabla)
+		
 		"SELECT id_estado, contexto, nombre, descripcion, activo FROM catalogo.estados WHERE id_estado = $1",
 		id,
 	).Scan(&c.ID_ESTADO, &c.CONTEXTO, &c.NOMBRE, &c.DESCRIPCION, &c.ACTIVO)
@@ -70,7 +70,7 @@ func CreateEstado(w http.ResponseWriter, r *http.Request) {
 	}
 
 	err = config.DB.QueryRow(
-		// ✅ RETURNING id_estado (columna), no RETURNING estados (tabla)
+		
 		"INSERT INTO catalogo.estados (contexto, nombre, descripcion, activo) VALUES ($1,$2,$3,$4) RETURNING id_estado",
 		c.CONTEXTO, c.NOMBRE, c.DESCRIPCION, c.ACTIVO,
 	).Scan(&c.ID_ESTADO)
@@ -100,7 +100,7 @@ func UpdateEstado(w http.ResponseWriter, r *http.Request) {
 	}
 
 	_, err = config.DB.Exec(
-		// ✅ WHERE id_estado (columna), no WHERE estados (tabla)
+		
 		"UPDATE catalogo.estados SET contexto=$1, nombre=$2, descripcion=$3, activo=$4 WHERE id_estado = $5",
 		c.CONTEXTO, c.NOMBRE, c.DESCRIPCION, c.ACTIVO, id,
 	)
@@ -122,7 +122,7 @@ func DeleteEstado(w http.ResponseWriter, r *http.Request) {
 	}
 
 	_, err = config.DB.Exec(
-		// ✅ WHERE id_estado (columna), no WHERE estados (tabla)
+		
 		"DELETE FROM catalogo.estados WHERE id_estado = $1", id,
 	)
 	if err != nil {

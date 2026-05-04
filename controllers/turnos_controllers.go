@@ -47,7 +47,7 @@ func GetTurnoByID(w http.ResponseWriter, r *http.Request) {
 	var c models.Turno
 
 	err = config.DB.QueryRow(
-		// ✅ FROM tabla WHERE columna (estaba FROM columna WHERE tabla)
+		
 		"SELECT id_turno, nombre, descripcion, activo FROM catalogo.turnos WHERE id_turno = $1",
 		id,
 	).Scan(&c.ID_TURNOS, &c.NOMBRE, &c.DESCRIPCION, &c.ACTIVO)
@@ -70,7 +70,7 @@ func CreateTurno(w http.ResponseWriter, r *http.Request) {
 	}
 
 	err = config.DB.QueryRow(
-		// ✅ INSERT INTO tabla RETURNING columna (estaba INSERT INTO columna RETURNING tabla)
+		
 		"INSERT INTO catalogo.turnos (nombre, descripcion, activo) VALUES ($1,$2,$3) RETURNING id_turno",
 		c.NOMBRE, c.DESCRIPCION, c.ACTIVO,
 	).Scan(&c.ID_TURNOS)
@@ -100,7 +100,7 @@ func UpdateTurno(w http.ResponseWriter, r *http.Request) {
 	}
 
 	_, err = config.DB.Exec(
-		// ✅ UPDATE tabla WHERE columna (estaba UPDATE columna WHERE tabla)
+		
 		"UPDATE catalogo.turnos SET nombre=$1, descripcion=$2, activo=$3 WHERE id_turno = $4",
 		c.NOMBRE, c.DESCRIPCION, c.ACTIVO, id,
 	)
@@ -122,7 +122,7 @@ func DeleteTurno(w http.ResponseWriter, r *http.Request) {
 	}
 
 	_, err = config.DB.Exec(
-		// ✅ DELETE FROM tabla WHERE columna (estaba DELETE FROM columna WHERE tabla)
+		
 		"DELETE FROM catalogo.turnos WHERE id_turno = $1", id,
 	)
 	if err != nil {

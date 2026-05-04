@@ -47,7 +47,7 @@ func GetModalidadesSuscripcionByID(w http.ResponseWriter, r *http.Request) {
 	var c models.ModalidadesSuscripcion
 
 	err = config.DB.QueryRow(
-		// ✅ FROM tabla WHERE columna (estaba FROM columna WHERE tabla)
+		
 		"SELECT id_modalidad_suscripcion, nombre, descripcion, activo FROM catalogo.modalidades_suscripcion WHERE id_modalidad_suscripcion = $1",
 		id,
 	).Scan(&c.ID_MODALIDAD_SUSCRIPCION, &c.NOMBRE, &c.DESCRIPCION, &c.ACTIVO)

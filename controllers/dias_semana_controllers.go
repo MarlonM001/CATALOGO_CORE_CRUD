@@ -48,7 +48,7 @@ func GetDiasSemanaByID(w http.ResponseWriter, r *http.Request) {
 	var c models.DiaSemana
 
 	err = config.DB.QueryRow(
-		// ✅ Mismo nombre de columna que en el SELECT del GET all
+		
 		"SELECT id_dia_semana, nombre, nombre_completo, orden FROM catalogo.dias_semana WHERE id_dia_semana = $1", id,
 	).Scan(&c.ID_DIAS_SEMANA, &c.NOMBRE, &c.NOMBRE_COMPLETO, &c.ORDEN)
 
@@ -70,7 +70,7 @@ func CreateDiasSemana(w http.ResponseWriter, r *http.Request) {
 	}
 
 	err = config.DB.QueryRow(
-		// ✅ INSERT INTO tabla ... RETURNING columna_id
+		
 		"INSERT INTO catalogo.dias_semana (nombre, nombre_completo, orden) VALUES ($1,$2,$3) RETURNING id_dia_semana",
 		c.NOMBRE, c.NOMBRE_COMPLETO, c.ORDEN,
 	).Scan(&c.ID_DIAS_SEMANA)
@@ -100,7 +100,7 @@ func UpdateDiasSemana(w http.ResponseWriter, r *http.Request) {
 	}
 
 	_, err = config.DB.Exec(
-		// ✅ UPDATE tabla SET ... WHERE columna_id
+		
 		"UPDATE catalogo.dias_semana SET nombre=$1, nombre_completo=$2, orden=$3 WHERE id_dia_semana = $4",
 		c.NOMBRE, c.NOMBRE_COMPLETO, c.ORDEN, id,
 	)
@@ -122,7 +122,7 @@ func DeleteDiasSemana(w http.ResponseWriter, r *http.Request) {
 	}
 
 	_, err = config.DB.Exec(
-		// ✅ DELETE FROM tabla WHERE columna_id
+		
 		"DELETE FROM catalogo.dias_semana WHERE id_dia_semana = $1", id,
 	)
 	if err != nil {
