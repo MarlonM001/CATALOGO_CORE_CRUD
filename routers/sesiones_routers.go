@@ -7,7 +7,7 @@ import (
 )
 
 func RegisterSesionRouters(r *mux.Router) {
-	r.HandleFunc("/sesion", controllers.GetSesiones).Methods("GET")
+	r.HandleFunc("/sesion", controllers.GetSesion).Methods("GET")
 	r.HandleFunc("/sesion/{id}", controllers.GetSesionByID).Methods("GET")
 	r.HandleFunc("/sesion", controllers.CreateSesion).Methods("POST")
 	r.HandleFunc("/sesion/{id}", controllers.UpdateSesion).Methods("PUT")

@@ -7,10 +7,10 @@ import (
 )
 
 func RegisterTipoDocumentos(r *mux.Router) {
-	r.HandleFunc("/tipo_documentos", controllers.GetExperiencia).Methods("GET")
-	r.HandleFunc("/tipo_documentos/{id}", controllers.GetExperienciaByID).Methods("GET")
-	r.HandleFunc("/tipo_documentos", controllers.CreateExperiencia).Methods("POST")
-	r.HandleFunc("/tipo_documentos/{id}", controllers.UpdateExperiencia).Methods("PUT")
-	r.HandleFunc("/tipo_documentos/{id}", controllers.DeleteExperiencia).Methods("DELETE")
+	r.HandleFunc("/tipo_documento", controllers.GetTipoDocumentos).Methods("GET")
+	r.HandleFunc("/tipo_documento/{id}", controllers.GetTiposDocumentosByID).Methods("GET")
+	r.HandleFunc("/tipo_documento", controllers.CreateTiposDocumentos).Methods("POST")
+	r.HandleFunc("/tipo_documento/{id}", controllers.UpdateTiposDocumentos).Methods("PUT")
+	r.HandleFunc("/tipo_documento/{id}", controllers.DeleteTiposDocumentos).Methods("DELETE")
 
 }
